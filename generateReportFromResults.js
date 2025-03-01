@@ -25,7 +25,7 @@ const generateReportBody = (testResults) =>
 const generateFeedbackAndReport = (runStatus, testResults) => {
   if (runStatus === "runFailed") {
     const feedback =
-      "We encountered errors when we tried to run tests on your submission. This usually happens when there is a syntax error in your code.\n\nPlease make sure that you run your code before making another submission. If you have seen this message more than once, please reach out to Pupilfirst team for support.";
+      "We encountered errors when we tried to run tests on your submission. This usually happens when there is a syntax error in your code.\n\nPlease make sure that you run your code before making another submission. If you have seen this message more than once, carefully review your code for errors and refer to the course materials and provided guidelines.";
 
     const reportPrefix =
       "One or more test suites failed without test results. This usually happens when there is a syntax error in the submitted code. What follows are snippets from test results:";
@@ -42,7 +42,7 @@ const generateFeedbackAndReport = (runStatus, testResults) => {
     const feedbackBody = generateFeedbackBody(testResults);
 
     const feedbackSuffix =
-      "Please make sure that you go through the assignment instructions. If you're having trouble with this assignment, please reach out to the Pupilfirst team on our Discord server.";
+      "Please make sure that you go through the assignment instructions. If you're having trouble with this assignment, carefully review your code for errors and refer to the course materials and provided guidelines.";
 
     const feedback =
       feedbackPrefix + "\n\n" + feedbackBody + "\n\n" + feedbackSuffix;
@@ -120,7 +120,7 @@ readFile("results.json").then((data) => {
       grade: "skip",
       status: "failure",
       feedback:
-        "We are unable to test your submission - something about it was too different from what we were expecting. Please check the instructions for this task and try again. If you have seen this message more than once, please reach out to Pupilfirst team for support.",
+        "We are unable to test your submission - something about it was too different from what we were expecting. Please check the instructions for this task and try again. If you have seen this message more than once, carefully review your code for errors and refer to the course materials and provided guidelines.",
       report:
         "Unable to generate report due to missing `results.json` file. Please contact a Pupilfirst team member and ask them the check VTA logs.",
     });
