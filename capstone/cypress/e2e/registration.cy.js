@@ -19,6 +19,13 @@ let validateExampleEntry = () => {
   });
 };
 
+// Helper to generate formatted DOB strings
+const formatDOBYearsAgo = (years) => {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() - years);
+  return date.toISOString().split("T")[0]; // yyyy-mm-dd
+};
+
 describe("", () => {
   beforeEach(() => {
     cy.visit(Cypress.env("STUDENT_SUBMISSION_URL"));
@@ -85,16 +92,19 @@ describe("", () => {
     cy.get("#password").type("TestPass");
     cy.get("#email").type("admin@example.com");
     cy.get("input[type=checkbox]").check();
-    // Should validate min age
-    cy.get("#dob").click().type("2007-02-02");
+
+    // Should reject age < 18
+    cy.get("#dob").click().clear().type(formatDOBYearsAgo(17));
     cy.get("[type='submit']").click();
     cy.get("table").find("tr").contains("Admin User 4").should("not.exist");
-    // Should validate max age
-    cy.get("#dob").click().type("1960-02-02");
+
+    // Should reject age > 55
+    cy.get("#dob").click().clear().type(formatDOBYearsAgo(56));
     cy.get("[type='submit']").click();
     cy.get("table").find("tr").contains("Admin User 4").should("not.exist");
-    // Should save when the error is resolved
-    cy.get("#dob").click().type("1998-02-02");
+
+    // Should accept age between 18 and 55
+    cy.get("#dob").click().clear().type(formatDOBYearsAgo(25));
     cy.get("[type='submit']").click();
     cy.get("table").find("tr").contains("Admin User 4").should("exist");
   });
