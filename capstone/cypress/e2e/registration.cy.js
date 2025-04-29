@@ -75,7 +75,7 @@ describe("", () => {
   it("The registration form should not accept invalid email addresses", () => {
     cy.get("#name").type("Admin User 4");
     cy.get("#password").type("TestPass");
-    cy.get("#dob").click().type("1970-02-02");
+    cy.get("#dob").click().type(formatDOBYearsAgo(25));
     cy.get("input[type=checkbox]").check();
     // Should have correct email validation
     cy.get("#email").type("admin2");
