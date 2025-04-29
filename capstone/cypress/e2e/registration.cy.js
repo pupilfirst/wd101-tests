@@ -75,7 +75,7 @@ describe("", () => {
   it("The registration form should not accept invalid email addresses", () => {
     cy.get("#name").type("Admin User 4");
     cy.get("#password").type("TestPass");
-    cy.get("#dob").click().type("1970-02-02");
+    cy.get("#dob").click().type(formatDOBYearsAgo(25));
     cy.get("input[type=checkbox]").check();
     // Should have correct email validation
     cy.get("#email").type("admin2");
@@ -107,5 +107,22 @@ describe("", () => {
     cy.get("#dob").click().clear().type(formatDOBYearsAgo(25));
     cy.get("[type='submit']").click();
     cy.get("table").find("tr").contains("Admin User 4").should("exist");
+
+    // Should accept edge case of 55 years and some months
+    cy.reload();
+    cy.get("#name").type("Senior User");
+    cy.get("#password").type("TestPass");
+    cy.get("#email").type("senior@example.com");
+    cy.get("input[type=checkbox]").check();
+
+    // Create a date that's 55 years and 2 months ago
+    const date55Plus = new Date();
+    date55Plus.setFullYear(date55Plus.getFullYear() - 55);
+    date55Plus.setMonth(date55Plus.getMonth() - 2);
+    const date55PlusFormatted = date55Plus.toISOString().split("T")[0];
+
+    cy.get("#dob").click().clear().type(date55PlusFormatted);
+    cy.get("[type='submit']").click();
+    cy.get("table").find("tr").contains("Senior User").should("exist");
   });
 });
